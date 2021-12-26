@@ -24,6 +24,7 @@ import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SimpleLogFormatter;
 import com.sun.management.OperatingSystemMXBean;
+import javax.swing.filechooser.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -447,22 +448,19 @@ public final class Launcher {
     public static void main(final String[] args) {
         setupLogger();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Launcher launcher = createFromArguments(args);
-                    SwingHelper.setSwingProperties(tr("launcher.appTitle", launcher.getVersion()));
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    launcher.showLauncherWindow();
-                } catch (Throwable t) {
-                    log.log(Level.WARNING, "Load failure", t);
-                    SwingHelper.showErrorDialog(null, "Uh oh! The updater couldn't be opened because a " +
-                            "problem was encountered.", "Launcher error", t);
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Launcher launcher = createFromArguments(args);
+                SwingHelper.setSwingProperties(tr("launcher.appTitle", launcher.getVersion()));
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                launcher.showLauncherWindow();
+            } catch (Throwable t) {
+                log.log(Level.WARNING, "Load failure", t);
+                SwingHelper.showErrorDialog(null, "Uh oh! The updater couldn't be opened because a " +
+                        "problem was encountered.", "Launcher error", t);
             }
         });
 
     }
-
+    
 }

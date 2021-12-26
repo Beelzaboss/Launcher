@@ -6,6 +6,7 @@
 
 package com.skcraft.launcher;
 
+import com.magicsweet.skcraft.launcher.share.BootstrapConfig;
 import com.skcraft.launcher.bootstrap.*;
 import lombok.Getter;
 import lombok.extern.java.Log;
@@ -184,19 +185,14 @@ public class Bootstrap {
         }
     }
 
-    private static File getFileChooseDefaultDir() {
+    public static File getFileChooseDefaultDir() {
         JFileChooser chooser = new JFileChooser();
         FileSystemView fsv = chooser.getFileSystemView();
         return fsv.getDefaultDirectory();
     }
 
     private File getUserLauncherDir() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("win")) {
-            return new File(getFileChooseDefaultDir(), getProperties().getProperty("homeFolderWindows"));
-        } else {
-            return new File(System.getProperty("user.home"), getProperties().getProperty("homeFolder"));
-        }
+        return BootstrapConfig.get().getWorkingDirectory();
     }
 
     private static boolean isPortableMode() {

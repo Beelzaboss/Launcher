@@ -6,6 +6,8 @@
 
 package com.skcraft.launcher.dialog;
 
+import com.magicsweet.skcraft.launcher.share.BootstrapConfig;
+import com.magicsweet.skcraft.launcher.share.ConfigFile;
 import com.skcraft.launcher.Configuration;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.dialog.component.BetterComboBox;
@@ -15,15 +17,16 @@ import com.skcraft.launcher.launch.runtime.JavaRuntimeFinder;
 import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.swing.*;
 import com.skcraft.launcher.util.SharedLocale;
+import java.awt.event.*;
+import java.io.IOException;
 import lombok.NonNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
+import lombok.SneakyThrows;
 
 /**
  * A dialog to modify configuration options.
@@ -52,6 +55,7 @@ public class ConfigurationDialog extends JDialog {
     private final JPasswordField proxyPasswordText = new JPasswordField();
     private final FormPanel advancedPanel = new FormPanel();
     private final JTextField gameKeyText = new JTextField();
+    private final JTextField installDirText = new JTextField(BootstrapConfig.get().getWorkingDirectory().toString());
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
     private final JButton okButton = new JButton(SharedLocale.tr("button.ok"));
     private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
@@ -132,6 +136,7 @@ public class ConfigurationDialog extends JDialog {
         tabbedPane.addTab(SharedLocale.tr("options.proxyTab"), SwingHelper.alignTabbedPane(proxySettingsPanel));
 
         advancedPanel.addRow(new JLabel(SharedLocale.tr("options.gameKey")), gameKeyText);
+        advancedPanel.addRow(new JLabel(SharedLocale.tr("options.installDir")), installDirText);
         SwingHelper.removeOpaqueness(advancedPanel);
         tabbedPane.addTab(SharedLocale.tr("options.advancedTab"), SwingHelper.alignTabbedPane(advancedPanel));
 
@@ -170,7 +175,34 @@ public class ConfigurationDialog extends JDialog {
                 ConsoleFrame.showMessages();
             }
         });
-
+        installDirText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                JFileChooser fc = new JFileChooser(BootstrapConfig.get().getWorkingDirectory());
+                fc.setFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        return f.isDirectory();
+                    }
+                    @Override
+                    public String getDescription() {
+                        return SharedLocale.tr("options.installDir.fileChooser.fileType");
+                    }
+                });
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fc.addActionListener(action -> {
+                    if (action.getActionCommand().equals("ApproveSelection")) {
+                        fc.setVisible(false);
+                        BootstrapConfig.get().setWorkingDirectory(fc.getSelectedFile());
+                        BootstrapConfig.get().save();
+                        installDirText.setText(BootstrapConfig.get().getWorkingDirectory().getAbsolutePath());
+                        RestartRequiredDialog.show(ConfigurationDialog.this);
+                    }
+                });
+                fc.showDialog(ConfigurationDialog.this, SharedLocale.tr("options.installDir.fileChooser.buttonAccept"));
+            }
+        });
+        
         jvmRuntime.addActionListener(e -> {
             // A little fun hack...
             if (jvmRuntime.getSelectedItem() == AddJavaRuntime.ADD_RUNTIME_SENTINEL) {

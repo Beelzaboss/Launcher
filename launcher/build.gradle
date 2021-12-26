@@ -18,6 +18,7 @@ dependencies {
     compile 'com.googlecode.plist:dd-plist:1.23'
 
     implementation 'net.java.dev.jna:jna-platform:5.10.0'
+    compile project(':share')
 }
 
 processResources {

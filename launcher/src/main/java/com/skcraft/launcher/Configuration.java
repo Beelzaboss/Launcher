@@ -40,7 +40,8 @@ public class Configuration {
     private boolean serverEnabled = false;
     private String serverHost;
     private int serverPort = 25565;
-
+    private String customInstancesDirectory = null;
+    
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
