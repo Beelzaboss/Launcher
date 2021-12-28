@@ -22,7 +22,7 @@ public class RestartRequiredDialog extends JDialog {
 		
 		container.add(new JLabel(SharedLocale.tr("dialog.restartRequired.text")));
 		
-		JButton okButton = new JButton(SharedLocale.tr("dialog.restartRequired.button.ok"));
+		JButton okButton = new JButton(SharedLocale.tr("button.ok"));
 		JButton laterButton = new JButton(SharedLocale.tr("dialog.restartRequired.button.later"));
 		
 		buttons.add(okButton);

@@ -54,7 +54,7 @@ public class OfflineSession implements Session {
 
     @Override
     public UserType getUserType() {
-        return UserType.LEGACY;
+        return UserType.OFFLINE;
     }
 
     @Override

@@ -40,11 +40,14 @@ public class AboutDialog extends JDialog {
     
     
         JButton okButton = new JButton("OK");
-        JButton sourceCodeButton = new JButton("Website");
-
+        JButton sourceCodeButton = new JButton("SKCraft's GitHub");
+        JButton editorButton = new JButton("MagicSweet's GitHub");
+    
+    
         container.add(sourceCodeButton, "span, split 3, sizegroup bttn");
+        container.add(editorButton, "span, split 3, sizegroup bttn");
         container.add(okButton, "tag ok, sizegroup bttn");
-
+        
         add(container, BorderLayout.CENTER);
 
         getRootPane().setDefaultButton(okButton);
@@ -52,6 +55,8 @@ public class AboutDialog extends JDialog {
 
         okButton.addActionListener(ActionListeners.dispose(this));
         sourceCodeButton.addActionListener(ActionListeners.openURL(this, "https://github.com/SKCraft/Launcher"));
+        editorButton.addActionListener(ActionListeners.openURL(this, "https://github.com/MagicSweet-dev/MafioziLauncher"));
+        
     }
 
     public static void showAboutDialog(Window parent) {
