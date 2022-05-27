@@ -34,13 +34,20 @@ public class AboutDialog extends JDialog {
                 "launcher platform that anyone can use."), "wrap, gapbottom unrel");
         container.add(new JLabel("<html>SKCraft does not necessarily endorse the version of<br>" +
                 "the launcher that you are using."), "wrap, gapbottom unrel");
-
+    
+        container.add(new JLabel("<html>Carefully edited and maintained by MagicSweet<br>" +
+            "Source code is available via GitHub"), "wrap, gapbottom unrel");
+    
+    
         JButton okButton = new JButton("OK");
-        JButton sourceCodeButton = new JButton("Website");
-
+        JButton sourceCodeButton = new JButton("SKCraft's GitHub");
+        JButton editorButton = new JButton("MagicSweet's GitHub");
+    
+    
         container.add(sourceCodeButton, "span, split 3, sizegroup bttn");
+        container.add(editorButton, "span, split 3, sizegroup bttn");
         container.add(okButton, "tag ok, sizegroup bttn");
-
+        
         add(container, BorderLayout.CENTER);
 
         getRootPane().setDefaultButton(okButton);
@@ -48,6 +55,8 @@ public class AboutDialog extends JDialog {
 
         okButton.addActionListener(ActionListeners.dispose(this));
         sourceCodeButton.addActionListener(ActionListeners.openURL(this, "https://github.com/SKCraft/Launcher"));
+        editorButton.addActionListener(ActionListeners.openURL(this, "https://github.com/MagicSweet-dev/MafioziLauncher"));
+        
     }
 
     public static void showAboutDialog(Window parent) {
